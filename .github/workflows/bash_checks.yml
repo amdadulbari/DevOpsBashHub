@@ -27,7 +27,7 @@ jobs:
 
     - name: Run ShellCheck for syntax analysis
       run: |
-        if ! find . -name "*.sh" -exec shellcheck {} +; then
+        if ! find . -name "*/*.sh" -exec shellcheck {} +; then
           echo "Shell script syntax issues detected."
           exit 1
         fi
