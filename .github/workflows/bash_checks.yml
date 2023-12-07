@@ -20,7 +20,7 @@ jobs:
 
     - name: Check shell script formatting with shfmt
       run: |
-        if ! shfmt -d *.sh; then
+        if ! shfmt -d */*.sh; then
           echo "Shell script formatting issues detected."
           exit 1
         fi
