@@ -8,7 +8,6 @@
 # Define the log directory and archive directory
 LOG_DIR="/path/to/log/directory"
 ARCHIVE_DIR="/path/to/archive/directory"
-a<1
 # Number of days to keep the log archives
 DAYS_RETENTION=7
 
