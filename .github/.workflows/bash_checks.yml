@@ -1,0 +1,33 @@
+name: Bash Checks
+
+on:
+  push:
+    branches-ignore: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check_bash:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install ShellCheck
+      run: sudo apt-get install shellcheck
+
+    - name: Install shfmt
+      run: sudo snap install shfmt
+
+    - name: Check shell script formatting with shfmt
+      run: |
+        if ! shfmt -d *.sh; then
+          echo "Shell script formatting issues detected."
+          exit 1
+        fi
+
+    - name: Run ShellCheck for syntax analysis
+      run: |
+        if ! find . -name "*.sh" -exec shellcheck {} +; then
+          echo "Shell script syntax issues detected."
+          exit 1
+        fi
