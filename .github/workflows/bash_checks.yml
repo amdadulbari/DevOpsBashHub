@@ -6,19 +6,25 @@ jobs:
   shellcheck:
     name: ShellCheck
     runs-on: ubuntu-latest
+    outputs:
+      shellcheck_failed: ${{ steps.shellcheck_outcome.outputs.failed }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Run ShellCheck
-        id: shellcheck
+        id: shellcheck_run
         uses: ludeeus/action-shellcheck@master
         with:
           severity: warning
-        continue-on-error: true  
+        continue-on-error: true
+
+      - name: Set outcome
+        id: shellcheck_outcome
+        run: echo "::set-output name=failed::${{ steps.shellcheck_run.outcome == 'failure' }}"
 
       - name: Comment PR
-        if: failure()  
+        if: steps.shellcheck_outcome.outputs.failed == 'true'
         uses: thollander/actions-comment-pull-request@v1
         with:
           message: 'ShellCheck analysis found issues. Please review the comments.'
