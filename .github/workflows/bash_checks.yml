@@ -2,7 +2,7 @@ name: Bash Checks
 
 on:
   push:
-    branches-ignore: [ main ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -20,14 +20,15 @@ jobs:
 
     - name: Check shell script formatting with shfmt
       run: |
-        if ! shfmt -d *.sh; then
+        if ! shfmt -d */*.sh; then
           echo "Shell script formatting issues detected."
           exit 1
         fi
 
     - name: Run ShellCheck for syntax analysis
       run: |
-        if ! find . -name "*.sh" -exec shellcheck {} +; then
+        if ! find . -name "*/*.sh" -exec shellcheck {} +; then
           echo "Shell script syntax issues detected."
           exit 1
         fi
+
