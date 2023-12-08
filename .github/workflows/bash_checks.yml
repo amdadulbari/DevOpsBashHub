@@ -1,31 +1,34 @@
-name: Code Quality Check
+name: Bash Checks
 
-on: [pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  shellcheck:
-    name: ShellCheck
+  check_bash:
     runs-on: ubuntu-latest
-    outputs:
-      shellcheck_failed: ${{ steps.shellcheck_outcome.outputs.failed }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Run ShellCheck
-        id: shellcheck_run
-        uses: ludeeus/action-shellcheck@master
-        with:
-          severity: warning
-        continue-on-error: true
+    - name: Install ShellCheck
+      run: sudo apt-get install shellcheck
 
-      - name: Set outcome
-        id: shellcheck_outcome
-        run: echo "::set-output name=failed::${{ steps.shellcheck_run.outcome == 'failure' }}"
+    - name: Install shfmt
+      run: sudo snap install shfmt
 
-      - name: Comment PR
-        if: steps.shellcheck_outcome.outputs.failed == 'true'
-        uses: thollander/actions-comment-pull-request@v1
-        with:
-          message: 'ShellCheck analysis found issues. Please review the comments.'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Check shell script formatting with shfmt
+      run: |
+        if ! shfmt -d */*.sh; then
+          echo "Shell script formatting issues detected."
+          exit 1
+        fi
+
+    - name: Run ShellCheck for syntax analysis
+      run: |
+        if ! find . -name "*/*.sh" -exec shellcheck {} +; then
+          echo "Shell script syntax issues detected."
+          exit 1
+        fi
+
