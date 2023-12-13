@@ -1,7 +1,7 @@
 # DevOpsShellHub
 
 ## Introduction
-Welcome to **DevOpsShellHub** – a comprehensive collection of shell scripts tailored for DevOps tasks. This repository is designed to simplify and automate various DevOps operations. These scripts are here to save you time and effort.
+Welcome to **DevOpsBashHub** – a comprehensive collection of shell scripts tailored for DevOps tasks. This repository is designed to simplify and automate various DevOps operations. These scripts are here to save you time and effort.
 
 ## Repository Structure
 The repository is organized into different folders, each dedicated to a specific DevOps function:
